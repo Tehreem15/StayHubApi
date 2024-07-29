@@ -1,0 +1,12 @@
+﻿1. Admins can create and manage, guest and staff accounts.  TblUser hold this data
+2 Admin can manage all room reservations. TblRoom use for adding room data , TblRoomBooking 
+3 Admins can manage staff activities, ensuring efficient hotel operations.
+4 Provide a user-friendly map guide to assist guests in navigating the hotel
+premises.
+5 Admin integrate an event management system to inform guests about hotel
+activities.
+6 Guests can create accounts and manage their profiles.
+7 Guests can search for room availability, make reservations.
+8 Easily request in-room services through the app.
+9 Guests can inquire about and book hotel events.
+10 Allow bookings for additional hotel services such as gym and spa
