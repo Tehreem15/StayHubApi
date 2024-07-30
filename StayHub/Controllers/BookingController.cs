@@ -7,5 +7,6 @@ namespace StayHub.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
+      //  hsjsj
     }
 }
