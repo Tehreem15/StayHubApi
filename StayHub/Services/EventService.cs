@@ -19,9 +19,9 @@ namespace StayHub.Services
             environment = _environment;
         }
 
-        public ApiBaseResponse AddEditEvent(EventVM model)
+        public ResponseModel AddEditEvent(EventVM model)
         {
-            ApiBaseResponse response= new ApiBaseResponse();
+            ResponseModel response= new ResponseModel();
             TblEvent tblevent = new TblEvent();
 
             try
@@ -86,9 +86,9 @@ namespace StayHub.Services
             return uniqueFileName;
         }
 
-        public ApiBaseResponse Delete(long Id)
+        public ResponseModel Delete(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 var tblevent = db.tblEvents.Where(x => x.Id == Id).FirstOrDefault();
@@ -107,9 +107,9 @@ namespace StayHub.Services
             return response;
         }
    
-        public ApiResponse<TblEvent> Edit(long id)
+        public ResponseModel<TblEvent> Edit(long id)
         {
-            ApiResponse<TblEvent> response = new ApiResponse<TblEvent>();
+            ResponseModel<TblEvent> response = new ResponseModel<TblEvent>();
             try
             {
                 var tblevent = db.tblEvents.Where(x => x.Id == id).FirstOrDefault();
@@ -128,9 +128,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<TblEvent> GetAllEvent()
+        public ResponseListModel<TblEvent> GetAllEvent()
         {
-            ApiListResponse<TblEvent> response = new ApiListResponse<TblEvent>();
+            ResponseListModel<TblEvent> response = new ResponseListModel<TblEvent>();
             try
             {
                 var tblevents = db.tblEvents.OrderBy(x => x.BookingStartDate).ToList();
@@ -147,9 +147,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiListResponse<TblEvent> GetAllEvents()
+        public ResponseListModel<TblEvent> GetAllEvents()
         {
-            ApiListResponse<TblEvent> response = new ApiListResponse<TblEvent>();
+            ResponseListModel<TblEvent> response = new ResponseListModel<TblEvent>();
             try
             {
                 var tblevents = db.tblEvents.OrderBy(x => x.EventDate).ToList();
@@ -170,10 +170,10 @@ namespace StayHub.Services
 
 
 
-        public ApiResponse<int> CheckBooingFestivalLimits(long EventId)
+        public ResponseModel<int> CheckBooingFestivalLimits(long EventId)
         {
 
-            ApiResponse<int> response= new ApiResponse<int>();
+            ResponseModel<int> response= new ResponseModel<int>();
             TblEvent EventDetail = db.tblEvents.Where(i => i.Id == EventId).FirstOrDefault();
             try
             {
@@ -227,10 +227,10 @@ namespace StayHub.Services
             _ = stime.Append(strlist[0] + ' ' + strlist[1].ToUpper());
             return stime.ToString();
         }
-        public ApiResponse<EventViewModel> GetSpecificEvent(long eventId)
+        public ResponseModel<EventViewModel> GetSpecificEvent(long eventId)
         {
             var obj = db.tblEvents.Where(e => e.Id == eventId && e.BookingEndDate >= DateTime.Now).FirstOrDefault();
-            ApiResponse<EventViewModel> response = new ApiResponse<EventViewModel>();
+            ResponseModel<EventViewModel> response = new ResponseModel<EventViewModel>();
             if (obj == null)
             {
                 response.Success = false;
@@ -267,9 +267,9 @@ namespace StayHub.Services
 
 
 
-        public ApiListResponse<EventViewModel> FillEventModelToEventViewModel(List<TblEvent> model)
+        public ResponseListModel<EventViewModel> FillEventModelToEventViewModel(List<TblEvent> model)
         {
-            ApiListResponse<EventViewModel> response = new ApiListResponse<EventViewModel>();
+            ResponseListModel<EventViewModel> response = new ResponseListModel<EventViewModel>();
             List<EventViewModel> eventViewModels = new List<EventViewModel>();
             foreach (TblEvent item in model)
             {
@@ -304,9 +304,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<KeyValueModel> GetStayHubEvents()
+        public ResponseListModel<KeyValueModel> GetStayHubEvents()
         {
-            ApiListResponse<KeyValueModel> response = new ApiListResponse<KeyValueModel>() ;
+            ResponseListModel<KeyValueModel> response = new ResponseListModel<KeyValueModel>() ;
             try
             {
                 response.List = db.tblEvents
@@ -325,9 +325,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiResponse<TblEvent> GetEventDetail(long id)
+        public ResponseModel<TblEvent> GetEventDetail(long id)
         {
-            ApiResponse<TblEvent> response = new ApiResponse<TblEvent>();
+            ResponseModel<TblEvent> response = new ResponseModel<TblEvent>();
             try
             {
                 var tblevent = db.tblEvents.Where(x => x.Id == id).FirstOrDefault();
@@ -347,9 +347,9 @@ namespace StayHub.Services
         }
 
       
-        public ApiListResponse<TblEvent> GetEvents()
+        public ResponseListModel<TblEvent> GetEvents()
         {
-            ApiListResponse<TblEvent> response = new ApiListResponse<TblEvent>();
+            ResponseListModel<TblEvent> response = new ResponseListModel<TblEvent>();
             try
             {
                 var tblevents = db.tblEvents.ToList();

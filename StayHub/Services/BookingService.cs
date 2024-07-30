@@ -23,10 +23,10 @@ namespace StayHub.Services
 
         }
 
-        public ApiListResponse<BookingViewModel> GetAllBookings(string SearchPaymentStatus)
+        public ResponseListModel<BookingViewModel> GetAllBookings(string SearchPaymentStatus)
         {
 
-            ApiListResponse<BookingViewModel> response = new ApiListResponse<BookingViewModel>();
+            ResponseListModel<BookingViewModel> response = new ResponseListModel<BookingViewModel>();
             List<TblBooking> list = db.tblBookings.Include(t=>t.TblUser).ToList();
             if (!string.IsNullOrEmpty(SearchPaymentStatus)) 
             {
@@ -61,9 +61,9 @@ namespace StayHub.Services
 
       
       
-        public ApiResponse<BookingVM> GetBookingDetails(long bookingId)
+        public ResponseModel<BookingVM> GetBookingDetails(long bookingId)
         {
-            ApiResponse<BookingVM> response = new ApiResponse<BookingVM>();
+            ResponseModel<BookingVM> response = new ResponseModel<BookingVM>();
             var booking = db.tblBookings.Where(b => b.Id == bookingId).FirstOrDefault();
             if (booking != null) {
                var detail = new BookingViewModel
@@ -102,9 +102,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<BookingTypeModel> GetBookingItemsDetails(long bookingId)
+        public ResponseListModel<BookingTypeModel> GetBookingItemsDetails(long bookingId)
         {
-            ApiListResponse<BookingTypeModel> response = new ApiListResponse<BookingTypeModel>();
+            ResponseListModel<BookingTypeModel> response = new ResponseListModel<BookingTypeModel>();
             List<TblBookingEvent> events = db.tblBookingEvents.Include(m => m.TblEvent).Where(b => b.BookingId == bookingId).ToList();
             List<TblBookingGym> gyms = db.tblBookingGyms.Include(g=>g.TblGym).Where(b => b.BookingId == bookingId).ToList();
             List<TblBookingSpa> spas = db.tblBookingSpas.Include(s=>s.TblSpa).Where(b => b.BookingId == bookingId).ToList();
@@ -185,9 +185,9 @@ namespace StayHub.Services
 
 
 
-        public ApiResponse<TblBooking> GetBookingDetailsById(long Id)
+        public ResponseModel<TblBooking> GetBookingDetailsById(long Id)
         {
-            ApiResponse<TblBooking> response = new ApiResponse<TblBooking>();
+            ResponseModel<TblBooking> response = new ResponseModel<TblBooking>();
 
            var booking= db.tblBookings.Where(i => i.Id == Id).FirstOrDefault();
             if (booking != null) { 
@@ -213,9 +213,9 @@ namespace StayHub.Services
 
         
 
-        public ApiResponse<TblBooking> GetAllBookingDetailsById(long Id)
+        public ResponseModel<TblBooking> GetAllBookingDetailsById(long Id)
         {
-            ApiResponse<TblBooking> response = new ApiResponse<TblBooking>();
+            ResponseModel<TblBooking> response = new ResponseModel<TblBooking>();
             var booking = db.tblBookings.Where(i => i.Id == Id)
                 .Include(i => i.TblBookingRooms).ThenInclude(i=>i.TblRoom)
                 .Include(i => i.TblBookingGyms).ThenInclude(i => i.TblGym)            
@@ -238,9 +238,9 @@ namespace StayHub.Services
         }
 
 
-        public ApiBaseResponse CancelBooking(long bookingId)
+        public ResponseModel CancelBooking(long bookingId)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             using (var transaction = db.Database.BeginTransaction())
             {
                 try

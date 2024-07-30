@@ -14,9 +14,9 @@ namespace StayHub.Services
             db = _db;
         }
 
-        public ApiBaseResponse SaveGym(SpaViewModel model)
+        public ResponseModel SaveGym(SpaViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblSpa spa = new TblSpa();
@@ -62,9 +62,9 @@ namespace StayHub.Services
             return response;
         }
         //used inm admin and frontend
-        public ApiListResponse<SpaViewModel> SpasList()
+        public ResponseListModel<SpaViewModel> SpasList()
         {
-            ApiListResponse<SpaViewModel> response = new ApiListResponse<SpaViewModel>();
+            ResponseListModel<SpaViewModel> response = new ResponseListModel<SpaViewModel>();
             response.Success = true;
             List<TblSpa> spas = db.tblSpas.ToList();
           
@@ -90,9 +90,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiResponse<SpaViewModel> GetSpaById(long Id)
+        public ResponseModel<SpaViewModel> GetSpaById(long Id)
         {
-            ApiResponse<SpaViewModel> response = new ApiResponse<SpaViewModel>();
+            ResponseModel<SpaViewModel> response = new ResponseModel<SpaViewModel>();
             TblSpa model = db.tblSpas.Where(s => s.Id == Id).FirstOrDefault();
             if (model != null)
             {
@@ -115,9 +115,9 @@ namespace StayHub.Services
 
         }
 
-        public ApiResponse<decimal> GetSpaPrice(long Id)
+        public ResponseModel<decimal> GetSpaPrice(long Id)
         {
-            ApiResponse<decimal> response = new ApiResponse<decimal>();
+            ResponseModel<decimal> response = new ResponseModel<decimal>();
             TblSpa spa= db.tblSpas.Where(s => s.Id == Id).FirstOrDefault();
             if (spa != null)
             {
@@ -132,9 +132,9 @@ namespace StayHub.Services
             return response;
 
         }
-        public ApiResponse<int> GetSpaCapacity(long Id)
+        public ResponseModel<int> GetSpaCapacity(long Id)
         {
-            ApiResponse<int> response = new ApiResponse<int>();
+            ResponseModel<int> response = new ResponseModel<int>();
             TblSpa spa = db.tblSpas.Where(s => s.Id == Id).FirstOrDefault();
             if (spa != null) 
             { 
@@ -151,9 +151,9 @@ namespace StayHub.Services
         }
 
 
-        public ApiBaseResponse DeleteSpa(long Id)
+        public ResponseModel DeleteSpa(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblSpa spa = db.tblSpas.Where(s => s.Id == Id).FirstOrDefault();
@@ -177,10 +177,10 @@ namespace StayHub.Services
 
         }
 
-        public ApiResponse<int> ValidateSpa(long SpaId, DateTime SpaDate)
+        public ResponseModel<int> ValidateSpa(long SpaId, DateTime SpaDate)
         {
 
-            ApiResponse<int> response = new ApiResponse<int>();
+            ResponseModel<int> response = new ResponseModel<int>();
             try
             {
                 int RemainingCapacity = -1;

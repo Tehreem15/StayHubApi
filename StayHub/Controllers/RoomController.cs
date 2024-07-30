@@ -91,7 +91,7 @@ namespace StayHub.Controllers
         [HttpPost("GetAvaliableRoom")]
         public IActionResult GetAvaliableRoom(RoomPriceViewModel model)
         {
-            var response = new ApiResponse<object>();
+            var response = new ResponseModel<object>();
             bool isValid = true;
             var result = roomService.GetRoom(model.Id);
             model.RoomName = result.Data.Name;
@@ -125,7 +125,7 @@ namespace StayHub.Controllers
         [HttpPost("CalculateBookingPrice")]
         public IActionResult CalculateBookingPrice([FromBody] RoomPriceGeneralModel model)
         {
-            var response= new ApiResponse<RoomPriceGeneralModel>();
+            var response= new ResponseModel<RoomPriceGeneralModel>();
             RoomViewModel resourceData = roomService.GetRoomById(model.Id).Data;
             List<TblRoomPrice> accomodationAvailablities = roomService.GetAvailablitiesRoomList(s => s.RoomId == model.Id && (s.Date >= model.Startdate && s.Date <= model.EndDate)).List;
             TimeSpan? datediff = model.EndDate - model.Startdate;

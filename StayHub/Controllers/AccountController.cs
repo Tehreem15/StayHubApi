@@ -38,7 +38,7 @@ namespace StayHub.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromForm] LoginModel model)
         {
-            var response = new ApiResponse<LoginClaimsModel>();
+            var response = new ResponseModel<LoginClaimsModel>();
             try
             {
                 response = accountService.CheckAccountAndGenerateToken(model);           
@@ -55,7 +55,7 @@ namespace StayHub.Controllers
         [HttpPost("ForgotPassword")]
         public IActionResult ForgotPassword([FromBody] EmailModel model)
         {
-            var response = new ApiBaseResponse();
+            var response = new ResponseModel();
             try
             {
                 if (model.Email?.Trim() is not null and not "")
@@ -120,7 +120,7 @@ namespace StayHub.Controllers
         [HttpPost("ResetPassword")]
         public IActionResult ResetPassword([FromForm] ResetPasswordModel model)
         {
-            var response = new ApiBaseResponse();
+            var response = new ResponseModel();
             try
             {
                 //Decode Password Reset Token
@@ -153,7 +153,7 @@ namespace StayHub.Controllers
         [Authorize]
         public IActionResult ChangrPassword([FromForm] ChangePasswordModel model)
         {
-            var response = new ApiResponse<string>();
+            var response = new ResponseModel<string>();
             if (ModelState.IsValid)
             {
                 var user =  accountService.FindById(model.Id);

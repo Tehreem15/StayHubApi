@@ -1,6 +1,6 @@
 ﻿namespace StayHub.Data.ResponseModel
 {
-    public class ApiListResponse<T>
+    public class ResponseListModel<T>
     {
         public List<T> List { get; set; }= new List<T>();
         public List<int> kList { get; set; } = new List<int>();

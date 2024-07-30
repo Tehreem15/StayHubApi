@@ -14,9 +14,9 @@ namespace StayHub.Services
         {
             db = _db;
         }
-        public ApiBaseResponse SaveRoomDetail(RoomViewModel model)
+        public ResponseModel SaveRoomDetail(RoomViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblRoom tblRoom = new TblRoom();
@@ -119,9 +119,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiListResponse<RoomViewModel> GetRoomList()
+        public ResponseListModel<RoomViewModel> GetRoomList()
         {
-            ApiListResponse<RoomViewModel> response = new ApiListResponse<RoomViewModel>();
+            ResponseListModel<RoomViewModel> response = new ResponseListModel<RoomViewModel>();
             List<TblRoom> rooms = db.tblRooms.Include(s => s.TblRoomImages).ToList();
             response.List = new List<RoomViewModel>();
 
@@ -145,9 +145,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiResponse<RoomViewModel> GetRoomById(long Id)
+        public ResponseModel<RoomViewModel> GetRoomById(long Id)
         {
-            ApiResponse<RoomViewModel> response = new ApiResponse<RoomViewModel>();
+            ResponseModel<RoomViewModel> response = new ResponseModel<RoomViewModel>();
             TblRoom tblRoom = db.tblRooms.Include(s => s.TblRoomImages).AsNoTracking().Where(s => s.Id == Id).FirstOrDefault();
             if (tblRoom == null)
             {
@@ -192,9 +192,9 @@ namespace StayHub.Services
             response.Data = model;
             return response;
         }
-        public ApiBaseResponse DeleteRoom(long Id)
+        public ResponseModel DeleteRoom(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblRoom tblRoom = db.tblRooms.Where(a => a.Id == Id).FirstOrDefault();
@@ -222,18 +222,18 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiListResponse<DropDownViewModel<long>> GetRoomByType(string Type)
+        public ResponseListModel<DropDownViewModel<long>> GetRoomByType(string Type)
         {
-            ApiListResponse<DropDownViewModel<long>> response = new ApiListResponse<DropDownViewModel<long>>();
+            ResponseListModel<DropDownViewModel<long>> response = new ResponseListModel<DropDownViewModel<long>>();
             List<DropDownViewModel<long>> list = db.tblRooms.Where(s => s.Type == Type).Select(s => new DropDownViewModel<long> { Value = s.Id, Text = s.Name }).ToList();
             response.List = list;
             response.Success = true;
             return response;
         }
         
-        public ApiBaseResponse SaveRoomPrice(RoomPriceViewModel model)
+        public ResponseModel SaveRoomPrice(RoomPriceViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 var days = model.Days.Where(s => s != "on").Select(s => Enum.Parse(typeof(DayOfWeek), s));
@@ -289,9 +289,9 @@ namespace StayHub.Services
             return response;
 
         }
-        public ApiListResponse<RoomAvailabilityViewModel> RoomAvailabilityList(RoomPriceViewModel model)
+        public ResponseListModel<RoomAvailabilityViewModel> RoomAvailabilityList(RoomPriceViewModel model)
         {
-            ApiListResponse<RoomAvailabilityViewModel> response = new ApiListResponse<RoomAvailabilityViewModel>();
+            ResponseListModel<RoomAvailabilityViewModel> response = new ResponseListModel<RoomAvailabilityViewModel>();
             try
             {
                 var StartDate = model.Startdate ?? DateTime.Now;
@@ -352,9 +352,9 @@ namespace StayHub.Services
 
 
         }
-        public ApiResponse<string> UpdateSinglePrice(long Id, decimal Price, decimal AddPersonPrice, string BookingStatus)
+        public ResponseModel<string> UpdateSinglePrice(long Id, decimal Price, decimal AddPersonPrice, string BookingStatus)
         {
-            ApiResponse<string> response = new();
+            ResponseModel<string> response = new();
             try
             {
                 TblRoomPrice availAbility = db.tblRoomPrices.Where(x => x.Id == Id).FirstOrDefault();
@@ -384,9 +384,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiResponse<RoomAvailabilityPriceModel> GetSinglePrice(long Id)
+        public ResponseModel<RoomAvailabilityPriceModel> GetSinglePrice(long Id)
         {
-            ApiResponse<RoomAvailabilityPriceModel> response = new ApiResponse<RoomAvailabilityPriceModel>();
+            ResponseModel<RoomAvailabilityPriceModel> response = new ResponseModel<RoomAvailabilityPriceModel>();
             try
             {
                 TblRoomPrice availAbility = db.tblRoomPrices.Where(c => c.Id == Id).FirstOrDefault();
@@ -410,16 +410,16 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiResponse<TblRoom> GetRoom(long id)
+        public ResponseModel<TblRoom> GetRoom(long id)
         {
-            ApiResponse<TblRoom> response = new ApiResponse<TblRoom>();
+            ResponseModel<TblRoom> response = new ResponseModel<TblRoom>();
             response.Data = db.tblRooms.Where(s => s.Id == id).FirstOrDefault();
             response.Success = true;
             return response;
         }
-        public ApiListResponse<TblRoomPrice> GetAvailablitiesRoomList(Expression<Func<TblRoomPrice, bool>> expression)
+        public ResponseListModel<TblRoomPrice> GetAvailablitiesRoomList(Expression<Func<TblRoomPrice, bool>> expression)
         {
-            ApiListResponse<TblRoomPrice> response = new ApiListResponse<TblRoomPrice>();
+            ResponseListModel<TblRoomPrice> response = new ResponseListModel<TblRoomPrice>();
             response.List = db.tblRoomPrices.Where(expression).ToList();
             response.Success = true;
             return response;

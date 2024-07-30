@@ -35,9 +35,9 @@ namespace StayHub.Services
             
         }
 
-        public ApiBaseResponse AddPassword(TblUser user, string newPassword)
+        public ResponseModel AddPassword(TblUser user, string newPassword)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
 
             if (user != null)
             {
@@ -56,9 +56,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiBaseResponse CheckEmailAlreadyExist(string Email, long Id)
+        public ResponseModel CheckEmailAlreadyExist(string Email, long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             if (Email != null)
             {
                 if (Id == 0)
@@ -73,9 +73,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiBaseResponse ChangePassword(TblUser user, string currentPassword, string newPassword)
+        public ResponseModel ChangePassword(TblUser user, string currentPassword, string newPassword)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
 
             if (user != null)
             {
@@ -101,9 +101,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiResponse<LoginClaimsModel> CheckAccountAndGenerateToken(LoginModel loginModel)
+        public ResponseModel<LoginClaimsModel> CheckAccountAndGenerateToken(LoginModel loginModel)
         {
-            ApiResponse<LoginClaimsModel> response = new ApiResponse<LoginClaimsModel>();
+            ResponseModel<LoginClaimsModel> response = new ResponseModel<LoginClaimsModel>();
            
 
             var user = db.tblUsers
@@ -173,10 +173,10 @@ namespace StayHub.Services
 
         }
 
-        public ApiBaseResponse ResetPassword(string resetToken, string newPassword)
+        public ResponseModel ResetPassword(string resetToken, string newPassword)
         {
 
-            var response = new ApiBaseResponse();
+            var response = new ResponseModel();
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("StayHubResetKey25102023139");

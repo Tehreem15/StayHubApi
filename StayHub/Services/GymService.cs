@@ -15,9 +15,9 @@ namespace StayHub.Services
             db = _db;
         }
 
-        public ApiBaseResponse SaveGym(GymViewModel model)
+        public ResponseModel SaveGym(GymViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();   
+            ResponseModel response = new ResponseModel();   
             try
             {
                 TblGym gym = new TblGym();
@@ -68,9 +68,9 @@ namespace StayHub.Services
             return response;
         }
         //used inm admin and frontend
-        public ApiListResponse<GymViewModel> GymsList(string gender)
+        public ResponseListModel<GymViewModel> GymsList(string gender)
         {
-            ApiListResponse<GymViewModel> response = new ApiListResponse<GymViewModel>();
+            ResponseListModel<GymViewModel> response = new ResponseListModel<GymViewModel>();
             response.Success = true;
             List<TblGym> gyms = db.tblGyms.ToList();
             if (string.IsNullOrEmpty(gender))
@@ -102,9 +102,9 @@ namespace StayHub.Services
             }
             return response;
         }
-        public ApiResponse<GymViewModel> GetGymById(long Id)
+        public ResponseModel<GymViewModel> GetGymById(long Id)
         {
-            ApiResponse<GymViewModel> response= new ApiResponse<GymViewModel>();
+            ResponseModel<GymViewModel> response= new ResponseModel<GymViewModel>();
             TblGym model= db.tblGyms.Where(s => s.Id == Id).FirstOrDefault();
             if (model != null)
             {
@@ -130,9 +130,9 @@ namespace StayHub.Services
 
         }
 
-        public ApiResponse<decimal> GetGymPrice(long Id)
+        public ResponseModel<decimal> GetGymPrice(long Id)
         {
-            ApiResponse<decimal> response= new ApiResponse<decimal>();  
+            ResponseModel<decimal> response= new ResponseModel<decimal>();  
             TblGym gym = db.tblGyms.Where(s => s.Id == Id).FirstOrDefault();
             if (gym != null)
             {
@@ -147,9 +147,9 @@ namespace StayHub.Services
             return response;
 
         }
-        public ApiResponse<int> GetGymCapacity(long Id)
+        public ResponseModel<int> GetGymCapacity(long Id)
         {
-            ApiResponse<int> response = new ApiResponse<int>();
+            ResponseModel<int> response = new ResponseModel<int>();
             TblGym gym = db.tblGyms.Where(s => s.Id == Id).FirstOrDefault();
             if (gym != null)
             {
@@ -166,9 +166,9 @@ namespace StayHub.Services
         }
 
 
-        public ApiBaseResponse DeleteGym(long Id)
+        public ResponseModel DeleteGym(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblGym gym = db.tblGyms.Where(s => s.Id == Id).FirstOrDefault();
@@ -192,10 +192,10 @@ namespace StayHub.Services
 
         }
 
-        public ApiResponse<int> ValidateGym(long GymId, int Month)
+        public ResponseModel<int> ValidateGym(long GymId, int Month)
         {
 
-            ApiResponse<int> response= new ApiResponse<int>();
+            ResponseModel<int> response= new ResponseModel<int>();
             try
             {
                 int RemainingCapacity = -1;

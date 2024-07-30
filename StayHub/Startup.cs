@@ -165,9 +165,6 @@ public class Startup
         if (env.IsDevelopment())
         {
 
-            app.UseSwagger();
-
-
             app.UseDeveloperExceptionPage();
         }
 

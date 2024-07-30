@@ -26,9 +26,9 @@ namespace StayHub.Services
             contextAccessor = _contextAccessor;
         }
 
-        public ApiResponse<GetFestivalTicketByTicketNumber> GetTicketByTicketNumber(string TicketNumber)
+        public ResponseModel<GetFestivalTicketByTicketNumber> GetTicketByTicketNumber(string TicketNumber)
         {
-            ApiResponse<GetFestivalTicketByTicketNumber> response = new ApiResponse<GetFestivalTicketByTicketNumber>();
+            ResponseModel<GetFestivalTicketByTicketNumber> response = new ResponseModel<GetFestivalTicketByTicketNumber>();
             GetFestivalTicketByTicketNumber model = new GetFestivalTicketByTicketNumber();
             try
             {
@@ -73,9 +73,9 @@ namespace StayHub.Services
 
         }
 
-        public ApiBaseResponse UpdateTicketStatus(long ID, string Status)
+        public ResponseModel UpdateTicketStatus(long ID, string Status)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             try
             {
                 TblBookingEventTicket Ticket = db.tblBookingEventTickets.Where(x => x.Id == ID).FirstOrDefault();

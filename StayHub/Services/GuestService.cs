@@ -31,9 +31,9 @@ namespace StayHub.Services
             }
             return uniqueFileName;
         }
-        public ApiBaseResponse Register(GuestRegisterModel model, IFormFile imageFile)
+        public ResponseModel Register(GuestRegisterModel model, IFormFile imageFile)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             if (model != null)
             {
                 string hashPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
@@ -64,9 +64,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiBaseResponse EditProfile(GuestViewModel model, IFormFile imageFile)
+        public ResponseModel EditProfile(GuestViewModel model, IFormFile imageFile)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             TblUser tblGuest = db.tblUsers.Where(g=>g.Id == model.Id).FirstOrDefault();   
             if (tblGuest!=null)
             {
@@ -114,9 +114,9 @@ namespace StayHub.Services
             }
             return Reference;
         }
-        public ApiBaseResponse DeleteGuestAccount(long Id)
+        public ResponseModel DeleteGuestAccount(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
 
             try
             {
@@ -185,9 +185,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiResponse<StaffViewModel> GetStaffDetailByID(long Id)
+        public ResponseModel<StaffViewModel> GetStaffDetailByID(long Id)
         {
-            ApiResponse<StaffViewModel> response = new ApiResponse<StaffViewModel>();
+            ResponseModel<StaffViewModel> response = new ResponseModel<StaffViewModel>();
             StaffViewModel model = new StaffViewModel();
             TblUser tblStaff = db.tblUsers.Where(x => x.Id == Id).FirstOrDefault();
             if (tblStaff != null)
@@ -205,9 +205,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<StaffViewModel> GetAllStaffs()
+        public ResponseListModel<StaffViewModel> GetAllStaffs()
         {
-            ApiListResponse<StaffViewModel> response = new ApiListResponse<StaffViewModel>();
+            ResponseListModel<StaffViewModel> response = new ResponseListModel<StaffViewModel>();
             response.Success = true;
             List<TblUser> staffs = db.tblUsers.Where(s => s.Role.Trim() == "STAFF").ToList();
             List<StaffViewModel> modelList = new List<StaffViewModel>();

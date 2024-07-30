@@ -159,9 +159,9 @@ namespace StayHub.Services
             //Sun 5 March 2023 11:45am-8:30pm
 
         }
-        public ApiBaseResponse ValidateRoom(ValidationRequest request)
+        public ResponseModel ValidateRoom(ValidationRequest request)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             if (request.Type == ResourceType.Accomodation)
             {
                 try

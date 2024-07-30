@@ -13,9 +13,9 @@ namespace StayHub.Services
            emailService =_emailService;
         }
 
-        public ApiBaseResponse AddEditStaff(StaffViewModel model)
+        public ResponseModel AddEditStaff(StaffViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             TblUser tblStaff = new TblUser();
             if (model.Id > 0)
             {
@@ -52,9 +52,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiBaseResponse Delete(long Id)
+        public ResponseModel Delete(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
            
             try
             {
@@ -83,9 +83,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiResponse<StaffViewModel> GetStaffDetailByID(long Id)
+        public ResponseModel<StaffViewModel> GetStaffDetailByID(long Id)
         {
-            ApiResponse<StaffViewModel> response = new ApiResponse<StaffViewModel>();
+            ResponseModel<StaffViewModel> response = new ResponseModel<StaffViewModel>();
             StaffViewModel model = new StaffViewModel();
             TblUser tblStaff = db.tblUsers.Where(x => x.Id == Id).FirstOrDefault();
             if (tblStaff != null)
@@ -103,9 +103,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<StaffViewModel> GetAllStaffs()
+        public ResponseListModel<StaffViewModel> GetAllStaffs()
         {
-            ApiListResponse<StaffViewModel> response = new ApiListResponse<StaffViewModel>();
+            ResponseListModel<StaffViewModel> response = new ResponseListModel<StaffViewModel>();
             response.Success = true;
             List<TblUser> staffs = db.tblUsers.Where(s=>s.Role.Trim()=="STAFF").ToList();
             List<StaffViewModel> modelList = new List<StaffViewModel>();
@@ -134,9 +134,9 @@ namespace StayHub.Services
         }
 
         //Staff Activity
-        public ApiBaseResponse AddEditActivity(StaffActivityViewModel model)
+        public ResponseModel AddEditActivity(StaffActivityViewModel model)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
             TblStaffActivity tblStaffActivity = new TblStaffActivity();
             var staff = db.tblUsers.Where(s=>s.Id== model.StaffId).FirstOrDefault();
             if (staff == null) { 
@@ -201,9 +201,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiBaseResponse DeleteActivity(long Id)
+        public ResponseModel DeleteActivity(long Id)
         {
-            ApiBaseResponse response = new ApiBaseResponse();
+            ResponseModel response = new ResponseModel();
 
             try
             {
@@ -228,9 +228,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiResponse<StaffActivityViewModel> GetStaffActivityById(long Id)
+        public ResponseModel<StaffActivityViewModel> GetStaffActivityById(long Id)
         {
-            ApiResponse<StaffActivityViewModel> response = new ApiResponse<StaffActivityViewModel>();
+            ResponseModel<StaffActivityViewModel> response = new ResponseModel<StaffActivityViewModel>();
             StaffActivityViewModel model = new StaffActivityViewModel();
             TblStaffActivity tblStaffActivity = db.tblStaffActivities.Where(x => x.Id == Id).FirstOrDefault();
             if (tblStaffActivity != null)
@@ -247,9 +247,9 @@ namespace StayHub.Services
             return response;
         }
 
-        public ApiListResponse<StaffActivityViewModel> GetStaffAllActivities(long staffId)
+        public ResponseListModel<StaffActivityViewModel> GetStaffAllActivities(long staffId)
         {
-            ApiListResponse<StaffActivityViewModel> response = new ApiListResponse<StaffActivityViewModel>();
+            ResponseListModel<StaffActivityViewModel> response = new ResponseListModel<StaffActivityViewModel>();
             response.Success = true;
             List<TblStaffActivity> staffs = db.tblStaffActivities.Where(s => s.StaffId== staffId).ToList();
             List<StaffActivityViewModel> modelList = new List<StaffActivityViewModel>();
