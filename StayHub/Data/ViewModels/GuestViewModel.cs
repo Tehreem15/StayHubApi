@@ -37,7 +37,8 @@ namespace StayHub.Data.ViewModels
         [StringLength(100)]
         public string Country { get; set; }
 
-    }
+        public IFormFile imageFile  { get; set; } 
+}
 
     public class GuestViewModel
     {
@@ -67,6 +68,7 @@ namespace StayHub.Data.ViewModels
         [StringLength(20)]
         public string PhoneNumber { get; set; }
         public string? ImgPath { get; set; }
+        public IFormFile imageFile { get; set; }
 
         [StringLength(100)]
         public string Country { get; set; }

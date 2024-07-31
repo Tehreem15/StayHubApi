@@ -17,4 +17,5 @@ namespace StayHub.Data.ViewModels
         public TimeSpan OpeningTime { get; set; }
         public TimeSpan ClosingTime { get; set; }
     }
+
 }

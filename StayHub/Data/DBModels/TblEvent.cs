@@ -19,7 +19,7 @@ namespace StayHub.Data.DBModels
     
         [DataType(DataType.Date)]
         [Required]
-        public DateTime? BookingStartDate { get; set; }
+        public DateTime BookingStartDate { get; set; }
 
         [DataType(DataType.Date)]
         [Required]

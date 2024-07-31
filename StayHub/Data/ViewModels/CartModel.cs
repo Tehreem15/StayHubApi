@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StayHub.Data.ViewModels
 {
@@ -54,8 +55,21 @@ namespace StayHub.Data.ViewModels
 
     public class EventModel
     {
-
+        public long id { get; set; }
+        public long eventId { get; set; }
+        public byte? adultTickets { get; set; } = 0;
+        public byte? childTickets { get; set; } = 0;
+        public decimal? itemTotalPrice { get; set; }
+        public string strItemTotalPrice { get; set; }
+      
+        //event details
+        public int index { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string shortDescription { get; set; }
+        public string eventBookingDate { get; set; }
     }
+}
 
     public class RoomModel
     {
@@ -85,11 +99,23 @@ namespace StayHub.Data.ViewModels
 
     public class GymModel
     {
+    public int Index { get; set; }
+    public long GymId { get; set; }
 
-    }
+    public string Name { get; set; }
+    public int MonthRange { get; set; }
+    public decimal Fee { get; set; }
+  
+}
 
     public class SpaModel
     {
-
-    }
+    public int Index { get; set; }
+    public long SpaId { get; set; }
+    public decimal? ItemTotalPrice { get; set; }
+    public int NoOfPersons { get; set; }
+    public string Name { get; set; }
+    public DateTime SpaDate { get; set; }
+    public decimal Fee { get; set; }
 }
+

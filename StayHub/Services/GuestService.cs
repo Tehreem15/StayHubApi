@@ -31,7 +31,7 @@ namespace StayHub.Services
             }
             return uniqueFileName;
         }
-        public ResponseModel Register(GuestRegisterModel model, IFormFile imageFile)
+        public ResponseModel Register(GuestRegisterModel model)
         {
             ResponseModel response = new ResponseModel();
             if (model != null)
@@ -54,9 +54,9 @@ namespace StayHub.Services
                     Zipcode = model.Zipcode,
                     GuestNumber = GenerateGuestNumber()
                 };
-                if (imageFile != null)
+                if (model.imageFile != null)
                 {
-                    tblGuest.ImgPath = UploadedFile(imageFile);
+                    tblGuest.ImgPath = UploadedFile(model.imageFile);
                 }
 
                 response.Success = db.SaveChanges() > 0;        
@@ -64,7 +64,7 @@ namespace StayHub.Services
             return response;
         }
 
-        public ResponseModel EditProfile(GuestViewModel model, IFormFile imageFile)
+        public ResponseModel EditProfile(GuestViewModel model)
         {
             ResponseModel response = new ResponseModel();
             TblUser tblGuest = db.tblUsers.Where(g=>g.Id == model.Id).FirstOrDefault();   
@@ -83,9 +83,9 @@ namespace StayHub.Services
                 tblGuest.Zipcode = model.Zipcode;
                 
                 };
-                if (imageFile != null)
+                if (model.imageFile != null)
                 {
-                    tblGuest.ImgPath = UploadedFile(imageFile);
+                    tblGuest.ImgPath = UploadedFile(model.imageFile);
                 }
 
                 response.Success = db.SaveChanges() > 0;
@@ -185,19 +185,25 @@ namespace StayHub.Services
             return response;
         }
 
-        public ResponseModel<StaffViewModel> GetStaffDetailByID(long Id)
+        public ResponseModel<GuestViewModel> GetGuestDetailByID(long Id)
         {
-            ResponseModel<StaffViewModel> response = new ResponseModel<StaffViewModel>();
-            StaffViewModel model = new StaffViewModel();
-            TblUser tblStaff = db.tblUsers.Where(x => x.Id == Id).FirstOrDefault();
-            if (tblStaff != null)
+            ResponseModel<GuestViewModel> response = new ResponseModel<GuestViewModel>();
+            GuestViewModel model = new GuestViewModel();
+            TblUser tblGuest = db.tblUsers.Where(x => x.Id == Id).FirstOrDefault();
+            if (tblGuest != null)
             {
                 model.Id = Id;
-                model.FirstName = tblStaff.FirstName;
-                model.LastName = tblStaff.LastName;
-                model.Email = tblStaff.Email;
-                model.PhoneNumber = tblStaff.PhoneNumber;
-                model.IsActive = tblStaff.IsActive;
+                model.FirstName = tblGuest.FirstName;
+                model.LastName = tblGuest.LastName;
+                model.Email = tblGuest.Email;
+                model.PhoneNumber = tblGuest.PhoneNumber;
+                model.Zipcode = tblGuest.Zipcode;
+                model.Address = tblGuest.Address;
+                model.ImgPath= tblGuest.ImgPath;
+                model.Title = tblGuest.Title;
+                model.City = tblGuest.City;
+                model.Country = tblGuest.Country;
+                
                 response.Success = true;
             }
 
@@ -205,26 +211,30 @@ namespace StayHub.Services
             return response;
         }
 
-        public ResponseListModel<StaffViewModel> GetAllStaffs()
+        public ResponseListModel<GuestViewModel> GetAllGuests()
         {
-            ResponseListModel<StaffViewModel> response = new ResponseListModel<StaffViewModel>();
+            ResponseListModel<GuestViewModel> response = new ResponseListModel<GuestViewModel>();
             response.Success = true;
-            List<TblUser> staffs = db.tblUsers.Where(s => s.Role.Trim() == "STAFF").ToList();
-            List<StaffViewModel> modelList = new List<StaffViewModel>();
+            List<TblUser> guests = db.tblUsers.Where(s => s.Role.Trim() == "GUEST" ).ToList();
+            List<GuestViewModel> modelList = new List<GuestViewModel>();
 
-            if (staffs != null && staffs.Count() > 0)
+            if (guests != null && guests.Count() > 0)
             {
 
-                foreach (TblUser item in staffs)
+                foreach (TblUser item in guests)
                 {
-                    StaffViewModel staff = new StaffViewModel()
+                    GuestViewModel staff = new GuestViewModel()
                     {
                         Email = item.Email,
                         FirstName = item.FirstName,
                         Id = item.Id,
-                        IsActive = item.IsActive,
+                        ImgPath=item.ImgPath,
+                        City=item.City,
+                        Country=item.Country,
+                        Title=item.Title,
+                        Zipcode=item.Zipcode,
                         LastName = item.LastName,
-                        Password = item.Password,
+                        Address=item.Address,
                         PhoneNumber = item.PhoneNumber,
                     };
 

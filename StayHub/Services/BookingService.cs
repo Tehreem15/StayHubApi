@@ -23,7 +23,7 @@ namespace StayHub.Services
 
         }
 
-        public ResponseListModel<BookingViewModel> GetAllBookings(string SearchPaymentStatus)
+        public ResponseListModel<BookingViewModel> GetAllBookings(string SearchPaymentStatus, int guestId)
         {
 
             ResponseListModel<BookingViewModel> response = new ResponseListModel<BookingViewModel>();
@@ -31,6 +31,10 @@ namespace StayHub.Services
             if (!string.IsNullOrEmpty(SearchPaymentStatus)) 
             {
                 list = list.Where(s=>s.Status==SearchPaymentStatus).ToList();
+            }
+            if (guestId>0)
+            {
+                list = list.Where(s => s.GuestId==guestId).ToList();
             }
             if (list != null && list.Count > 0) {
               response.List= list.Select(b => new BookingViewModel
@@ -185,17 +189,12 @@ namespace StayHub.Services
 
 
 
-        public ResponseModel<TblBooking> GetBookingDetailsById(long Id)
+        public TblBooking GetBookingDetailsById(long Id)
         {
-            ResponseModel<TblBooking> response = new ResponseModel<TblBooking>();
+            TblBooking response = new TblBooking();
 
            var booking= db.tblBookings.Where(i => i.Id == Id).FirstOrDefault();
-            if (booking != null) { 
-            
-                response.Data = booking;
-                response.Success = true;
-            }
-            return response;
+           return response;
         }
 
         public int GetBookingReferenceNumber()
@@ -213,10 +212,11 @@ namespace StayHub.Services
 
         
 
-        public ResponseModel<TblBooking> GetAllBookingDetailsById(long Id)
+        public TblBooking GetAllBookingDetailsById(long Id)
         {
-            ResponseModel<TblBooking> response = new ResponseModel<TblBooking>();
+            TblBooking response = new TblBooking();
             var booking = db.tblBookings.Where(i => i.Id == Id)
+                .Include(t=>t.TblUser)
                 .Include(i => i.TblBookingRooms).ThenInclude(i=>i.TblRoom)
                 .Include(i => i.TblBookingGyms).ThenInclude(i => i.TblGym)            
                 .Include(i => i.TblBookingSpas).ThenInclude(i => i.TblSpa)
@@ -224,16 +224,7 @@ namespace StayHub.Services
                 .Include(i => i.TblBookingEvents).ThenInclude(i => i.TblBookingEventTickets)
                 .Include(i => i.TblBookingEvents).ThenInclude(i => i.TblEvent)            
                 .AsNoTracking().FirstOrDefault();
-            if (booking != null)
-            {
-               response.Data= booking;
-                response.Success = true;
-            }
-            else
-            {
-                response.Success=false;
-
-            }
+            
             return response;
         }
 

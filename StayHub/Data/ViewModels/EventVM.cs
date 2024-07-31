@@ -64,20 +64,15 @@ namespace StayHub.Data.ViewModels
 
         [DataType(DataType.Time)]
         public TimeSpan EndTime { get; set; }
-        public decimal? PicnicBasketRefundPrice { get; set; }
         public string Location { get; set; }
-
-        public string Description { get; set; }
-
-        [Display(Name = "Event Image")]
-        public string EventImage { get; set; }
-        public String editor { get; set; }
-        public string oldimage { get; set; }
-        public int AdultTickets { get; set; }
+        public string? EventImage { get; set; }
+        public String Description { get; set; }
+      
         public decimal AdultTicketPrice { get; set; }
-        public int ChildTickets { get; set; }
         public decimal ChildTicketPrice { get; set; }
         public int MaxTicket { get; set; } = 0;
+
+        public IFormFile EventFile { get; set; }
 
     }
 

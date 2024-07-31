@@ -14,7 +14,7 @@ namespace StayHub.Services
             db = _db;
         }
 
-        public ResponseModel SaveGym(SpaViewModel model)
+        public ResponseModel SaveSpa(SpaViewModel model)
         {
             ResponseModel response = new ResponseModel();
             try

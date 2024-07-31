@@ -107,16 +107,37 @@ namespace StayHub.Services
             return response;
         }
    
-        public ResponseModel<TblEvent> Edit(long id)
+        public ResponseModel<EventVM> GetEventModel(long id)
         {
-            ResponseModel<TblEvent> response = new ResponseModel<TblEvent>();
+            ResponseModel<EventVM> response = new ResponseModel<EventVM>();
             try
             {
                 var tblevent = db.tblEvents.Where(x => x.Id == id).FirstOrDefault();
                 if (tblevent != null)
                 {
+                    EventVM eventVM = new EventVM()
+                    {
+                        EventFile = null,
+                        BookingStartDate = tblevent
+                        .BookingStartDate,
+                        AdultTicketPrice = tblevent.AdultTicketPrice,
+                        ShortDescription = tblevent.ShortDescription,
+                        Description = tblevent.Description,
+                        BookingEndDate = tblevent.BookingEndDate,
+                        ChildTicketPrice = tblevent.ChildTicketPrice,
+                        EndTime = tblevent.EndTime,
+                        EventDate = tblevent.EventDate,
+                        EventImage = tblevent.EventImageUrl,
+                        StartTime = tblevent.StartTime,
+                        Id = tblevent.Id
+                        ,
+                        Location = tblevent.Location,
+                        MaxTicket=tblevent.MaxTicket,
+                        Name = tblevent.Name,
+                        
+                    };
                     response.Success = true;
-                    response.Data = tblevent;
+                    response.Data = eventVM;
                 }
             }
             catch (Exception ex)
@@ -170,7 +191,7 @@ namespace StayHub.Services
 
 
 
-        public ResponseModel<int> CheckBooingFestivalLimits(long EventId)
+        public ResponseModel<int> CheckBookingEventTickets(long EventId)
         {
 
             ResponseModel<int> response= new ResponseModel<int>();
@@ -184,6 +205,7 @@ namespace StayHub.Services
                     int BookedAdmissionTicket = db.tblBookingEvents.Include(e => e.TblBooking).Where(e => e.EventId == EventId && e.TblBooking.Status == "Paid")
                         .Sum(e => e.NoOfAdultTicket + e.NoOfChildTicket);
                     RemainingAddmissionTicket = MaxAdmissionTicket - BookedAdmissionTicket;
+                    response.Success = true;
                 }
            
                 //Case 1:
@@ -192,13 +214,10 @@ namespace StayHub.Services
                 //Case 2:
                 //result is -1 , less than -1 or Zero than show no ticket available
 
-                //Case 3:
-                // if that item not exist in that event then procedure return 0 we convert that zero case into -1
-
-                //here we handle all 3 cases in 2 scenarios
+            
                 //if result return -1 then tickets are zero
                 response.Data = RemainingAddmissionTicket;
-                response.Success = true;
+               
               
             }
 
@@ -221,7 +240,7 @@ namespace StayHub.Services
             TimeSpan timeSpan = new TimeSpan();
             TimeSpan value = modeltime ?? timeSpan;
             DateTime time = DateTime.Today.Add(value);
-            string STime = time.ToString("hh:mm tt");
+            string STime = time.ToString("hh:mmtt");
             string[] strlist = STime.Split(' ');
             StringBuilder stime = new StringBuilder();
             _ = stime.Append(strlist[0] + ' ' + strlist[1].ToUpper());
