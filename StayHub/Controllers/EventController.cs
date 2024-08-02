@@ -91,16 +91,16 @@ namespace StayHub.Controllers
         public IActionResult CalculatePrice([FromBody] EventModel model)
         {
             var response= new ResponseModel<EventModel>();  
-            var eventDetail = eventService.GetEventDetail(model.eventId).Data;
+            var eventDetail = eventService.GetEventDetail(model.EventId).Data;
 
             if (model != null)
             {
-                decimal? price = 0;
-                price += model.adultTickets == null ? 0 : (model.adultTickets * eventDetail.AdultTicketPrice);
-                price += model.childTickets == null ? 0 : (model.childTickets * eventDetail.ChildTicketPrice);
+                decimal price = 0;
+                price += model.AdultTickets * eventDetail.AdultTicketPrice;
+                price += model.ChildTickets * eventDetail.ChildTicketPrice;
                 string AmountFormat = "{0:$#,##0.00; -$#,##0.00;}";
-                model.itemTotalPrice = price;
-                model.strItemTotalPrice = String.Format(AmountFormat, Convert.ToInt32(price));
+                model.ItemTotalPrice = price;
+                model.StrItemTotalPrice = String.Format(AmountFormat, Convert.ToInt32(price));
                 response.Data = model;
                 response.Success = true;
             }
@@ -113,49 +113,12 @@ namespace StayHub.Controllers
         [HttpPost("ValidateBookingEvent")]
         public IActionResult ValidateBookingEvent([FromBody] EventModel model)
         {
-            var response = new ResponseModel();
-           
-            if (model == null)
-            {
-                response.Success = false;
-                return Ok(response);
-            }
-            bool IsNoTickets =  model.adultTickets == 0 && model.childTickets == 0;
-            if (IsNoTickets == true)
-            {
-                response.Success = false;
-                response.Message = "No tickets are selected.";
-                return Ok(response);
-            }
-            var result = eventService.CheckBookingEventTickets(model.eventId);
-            if (result != null)
-            {
-                int RemainingTickets = result.Data;
-                int? totalEntryTicket = model.adultTickets + model.childTickets;
-               
-                if (IsNoTickets == true)
-                {
-                    if (RemainingTickets <= -1 || RemainingTickets == 0)
-                    {
-                        response.Success = false;
-                        response.Message= "Currently no ticket(s) are available.";
-                    }
-                    else if (RemainingTickets > 0 && totalEntryTicket > RemainingTickets)
-                    {
-                        response.Success = false;
-                        response.Message = "Currently "+ RemainingTickets + " ticket(s) are available.";
-                    }
-                    else
-                    {
-                        response.Success = true;
-                    }
-                }
-            }
+            var response = eventService.ValidateBookingEvent(model);
             return Ok(response);
         }
 
         [HttpGet("GetTicketList")]
-        public async Task<IActionResult> GetTicketList([FromQuery] int bookingId)
+        public IActionResult GetTicketList([FromQuery] int bookingId)
         {
 
             var response = new ResponseListModel<SingleEventTicketModel>();
@@ -176,7 +139,7 @@ namespace StayHub.Controllers
             return Ok(response);
 
         }
-
+        [NonAction]
         public List<SingleEventTicketModel> FillSingleTicketModelFromDB(TblBooking booking)
         {
             List<SingleEventTicketModel> lstModel = new List<SingleEventTicketModel>();
@@ -217,7 +180,9 @@ namespace StayHub.Controllers
             }
             return lstModel;
         }
-        public string GetEventDateTime(TblEvent tblEvent)
+    
+    [NonAction]
+    public string GetEventDateTime(TblEvent tblEvent)
         {
             StringBuilder stringBuilder = new StringBuilder();
           

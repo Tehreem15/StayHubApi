@@ -207,5 +207,33 @@ namespace StayHub.Services
             return response;
 
         }
+
+        public ResponseModel ValidateSpaCapacity(long SpaId, DateTime SpaDate, int NoOfPersons, string Name)
+        {
+            var response = new ResponseModel();
+            var result = ValidateSpa(SpaId, SpaDate);
+            if (result.Success)
+            {
+
+                int remainingCapacity = result.Data;
+                if (remainingCapacity <= -1 || remainingCapacity == 0)
+                {
+                    response.Success = false;
+                    response.Message = Name + " has no more capacity for " + SpaDate.ToString("dd MMM yyyy");
+                }
+                else if (remainingCapacity > 0 && NoOfPersons > remainingCapacity)
+                {
+                    response.Success = false;
+                    response.Message = "Currently " + remainingCapacity + "capacity for " + SpaDate.ToString("dd MMM yyyy");
+                }
+                else
+                {
+                    response.Success = true;
+                }
+            }
+            return response;
+        }
+
+
     }
 }

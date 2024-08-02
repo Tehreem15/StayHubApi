@@ -221,5 +221,48 @@ namespace StayHub.Services
             return response;
 
         }
+
+
+        public ResponseModel ValidateGymCapacity(long gymId, int MonthRange, string Name)
+        {
+            var response = new ResponseModel();
+            var result = ValidateGym(gymId, MonthRange);
+            if (result.Success)
+            {
+                string MonthNames = GetMonthRange(MonthRange);
+                int remainingCapacity = result.Data;
+                if (remainingCapacity <= -1 || remainingCapacity == 0)
+                {
+                    response.Success = false;
+                    response.Message = Name + " has no more capacity for " + MonthNames;
+                }
+                else
+                {
+                    response.Success = true;
+                }
+            }
+            return response;
+        }
+
+        private string GetMonthRange(int Month)
+        {
+            string sessionMonth = "";
+            switch (Month)
+            {
+                case 1:
+                    sessionMonth = "Jan-Mar.";
+                    break;
+                case 2:
+                    sessionMonth = "Apr-June.";
+                    break;
+                case 3:
+                    sessionMonth = "July-Sept.";
+                    break;
+                case 4:
+                    sessionMonth = "Oct-Dec.";
+                    break;
+            }
+            return sessionMonth;
+        }
     }
 }

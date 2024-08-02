@@ -248,11 +248,11 @@ namespace StayHub.Services
 
         }
 
-        public TblUser FindById(string Id)
+        public TblUser FindById(long Id)
         {
 
             var user =  db.tblUsers
-                .Where(u => u.Id.ToString() == Id)
+                .Where(u => u.Id == Id)
                 .FirstOrDefault();
 
             return user;

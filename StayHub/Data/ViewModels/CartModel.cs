@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StayHub.Data.DBModels;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StayHub.Data.ViewModels
@@ -15,17 +16,31 @@ namespace StayHub.Data.ViewModels
         public List<SpaModel> lstSpa { get; set; }
     }
 
+    public class CartItemsModel
+    {
+        public List<EventModel> lstEvent { get; set; }
+        public List<RoomModel> lstRoom { get; set; }
+        public List<RoomServiceModel> lstRoomService { get; set; }
+        public List<GymModel> lstGym { get; set; }
+        public List<SpaModel> lstSpa { get; set; }
+    }
+    public class CartCalculateModel
+    {
+        public CartModel CartModel { get; set; }
+
+        public decimal TotalPrice { get; set; }
+    }
+
     public class BookingModel
     {
 
         public long Id { get; set; }
         public string ReferenceNumber { get; set; }
-        public decimal? BookingAmount { get; set; }
+        public decimal BookingAmount { get; set; }
         public DateTime? BookingDate { get; set; }
         public decimal? PaidAmount { get; set; }
         public string Status { get; set; }
         public string Notes { get; set; }
-    
         public long GuestId { get; set; }
     }
 
@@ -50,23 +65,23 @@ namespace StayHub.Data.ViewModels
         [StringLength(3, ErrorMessage = "Max 3 digits allowed")]
         public string CVV { get; set; }
         public string TransactionId { get; set; }
-        public string Status { get; set; }
+       
     }
 
     public class EventModel
     {
-        public long id { get; set; }
-        public long eventId { get; set; }
-        public byte? adultTickets { get; set; } = 0;
-        public byte? childTickets { get; set; } = 0;
-        public decimal? itemTotalPrice { get; set; }
-        public string strItemTotalPrice { get; set; }
+        public long Id { get; set; }
+        public long EventId { get; set; }
+        public int AdultTickets { get; set; } = 0;
+        public int ChildTickets { get; set; } = 0;
+        public decimal ItemTotalPrice { get; set; }
+        public string StrItemTotalPrice { get; set; }
       
         //event details
-        public int index { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string shortDescription { get; set; }
+        public int Index { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ShortDescription { get; set; }
         public string eventBookingDate { get; set; }
     }
 }
@@ -80,13 +95,13 @@ namespace StayHub.Data.ViewModels
         public DateTime? CheckInDate { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? CheckOutDate { get; set; }
-        public decimal? ItemTotalPrice { get; set; }
+        public decimal ItemTotalPrice { get; set; }
 
         public bool isValid { get; set; }
         public string Details { get; set; }
         public string RoomName { get; set; }
-        public byte? MaxPerson { get; set; }
-        public byte? NoofNightStay { get; set; }
+        public int MaxPerson { get; set; }
+        public int NoofNightStay { get; set; }
         public int Index { get; set; }
 
 
@@ -94,8 +109,13 @@ namespace StayHub.Data.ViewModels
 
     public class RoomServiceModel 
     {
-        
-    }
+        public int Index { get; set; }
+        public long RoomId { get; set; }
+        public string ServiceName { get; set; } //list 
+        public string Description { get; set; }
+        public DateTime RequestDate { get; set; }
+        public decimal Price { get; set; }
+}
 
     public class GymModel
     {
@@ -104,7 +124,7 @@ namespace StayHub.Data.ViewModels
 
     public string Name { get; set; }
     public int MonthRange { get; set; }
-    public decimal Fee { get; set; }
+    public decimal Price { get; set; }
   
 }
 
@@ -112,10 +132,10 @@ namespace StayHub.Data.ViewModels
     {
     public int Index { get; set; }
     public long SpaId { get; set; }
-    public decimal? ItemTotalPrice { get; set; }
+    public decimal ItemTotalPrice { get; set; }
     public int NoOfPersons { get; set; }
     public string Name { get; set; }
     public DateTime SpaDate { get; set; }
-    public decimal Fee { get; set; }
+    public decimal Price { get; set; }
 }
 

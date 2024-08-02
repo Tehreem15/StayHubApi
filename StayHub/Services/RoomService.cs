@@ -5,6 +5,8 @@ using StayHub.Data.ViewModels;
 using System.Data;
 using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
+using Azure;
+using Microsoft.AspNetCore.Http.HttpResults;
 namespace StayHub.Services
 {
     public class RoomService
@@ -426,6 +428,113 @@ namespace StayHub.Services
 
         }
 
+        public ResponseModel<RoomPriceGeneralModel> ValidateRoom(RoomPriceGeneralModel model)
+        {
+            ResponseModel<RoomPriceGeneralModel> response = new ResponseModel<RoomPriceGeneralModel>();
+            RoomViewModel resourceData = GetRoomById(model.Id).Data;
+            List<TblRoomPrice> accomodationAvailablities = GetAvailablitiesRoomList(s => s.RoomId == model.Id && (s.Date >= model.Startdate && s.Date <= model.EndDate)).List;
+            TimeSpan? datediff = model.EndDate - model.Startdate;
+            if (datediff.HasValue)
+                model.NoofNights = Convert.ToInt32(datediff.Value.TotalDays);
 
-    } 
+            if (model.Startdate.HasValue && model.EndDate.HasValue)
+            {
+                for (DateTime i = model.Startdate.Value.Date; i < model.EndDate.Value; i = i.AddDays(1))
+                {
+                    var availabilityByDate = accomodationAvailablities.FirstOrDefault(s => s.Date.Date == i.Date.Date);
+                    if (availabilityByDate != null && availabilityByDate.Status == "A")
+                    {
+                        model.Price += availabilityByDate.Price;
+                        if (model.MaxAdditionalPerson > 0)
+                        {
+                            model.Price = model.Price + (model.MaxAdditionalPerson * availabilityByDate.AddPersonPrice);
+                        }
+
+                    }
+                    else
+                    {
+                        if (availabilityByDate == null)
+                            model.DateWiseReasons.Add(new DateWiseReasons()
+                            {
+                                Date = i,
+                                Reason = ReasonType.NotReady
+                            });
+                        else if (availabilityByDate.Status == "B")
+                            model.DateWiseReasons.Add(new DateWiseReasons()
+                            {
+                                Date = i,
+                                Reason = ReasonType.AlreadyBooked
+                            });
+                        else if (availabilityByDate.Status == "N")
+                            model.DateWiseReasons.Add(new DateWiseReasons()
+                            {
+                                Date = i,
+                                Reason = ReasonType.NotAvailable
+                            });
+                    }
+                }
+            }
+
+            response.Success = true;
+            response.Data = model;
+            return response;
+
+        }
+
+
+        public ResponseModel ValidateRoomPriceAndAvailability(RoomModel model)
+        {
+           var response= new ResponseModel();
+           
+            if (model.CheckInDate == null || model.CheckOutDate == null)
+            {
+                response.Success = false;
+                response.Message = "Check-In or Check out date(s) are missing.";
+                return response;
+            }
+            else
+            {
+                DateTime startDate = model.CheckInDate.Value;
+                DateTime endDate = model.CheckOutDate.Value;
+
+                List<TblRoomPrice> availabilities = db.tblRoomPrices.Where(s => s.Date >= startDate && s.Date <= endDate && s.RoomId== model.RoomId).ToList();
+                TimeSpan datediff = endDate - startDate;
+                if (datediff.TotalDays > 0)
+                {
+                    for (DateTime i = startDate.Date; i < endDate; i = i.AddDays(1))
+                    {
+                       TblRoomPrice availability = availabilities.FirstOrDefault(s => s.Date == i.Date);
+                        if (availability == null)
+                        {
+                            response.Success = false;
+                            response.Message = i.ToString("dd-MMM-yyyy")+" is not available for booking.";
+                            return response;
+                        }
+                        else if (availability.Status != "A")
+                        {
+                            response.Success = false;
+                            response.Message = i.ToString("dd-MMM-yyyy") + " is no longer available for booking.";
+                            return response;
+                          
+                        }
+                        else
+                        {
+                            response.Success = true;
+                            response.Message = string.Empty;
+                        }
+                    }
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Check out date must be greater than check-in date.";
+                    return response;
+                }
+            }
+          
+            return response;
+        }
+
+
+    }
 }

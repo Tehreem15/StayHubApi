@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StayHub.Data.DBModels;
 
@@ -11,9 +12,11 @@ using StayHub.Data.DBModels;
 namespace StayHub.Migrations
 {
     [DbContext(typeof(StayHubContext))]
-    partial class StayHubContextModelSnapshot : ModelSnapshot
+    [Migration("20240802175756_ChangeTable")]
+    partial class ChangeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

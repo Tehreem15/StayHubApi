@@ -11,19 +11,19 @@ namespace StayHub.Data.ViewModels
         public string ShortDescription { get; set; }
 
         [DataType(DataType.Date)] 
-        public DateTime? EventDate { get; set; }
+        public DateTime EventDate { get; set; }
 
         [DataType(DataType.Date)]     
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? EndDate { get; set; }
+        public DateTime EndDate { get; set; }
       
        [DataType(DataType.Time)]
-        public TimeSpan? StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
         [DataType(DataType.Time)]
-        public TimeSpan? EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         public string strStartTime { get; set; }
         public string strEndTime { get; set; }

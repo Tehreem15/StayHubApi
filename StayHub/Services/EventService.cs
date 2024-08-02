@@ -388,7 +388,48 @@ namespace StayHub.Services
         }
 
 
+        public ResponseModel ValidateBookingEvent(EventModel model)
+        {
+            var response = new ResponseModel();
 
+            if (model == null)
+            {
+                response.Success = false;
+                return response;
+            }
+            bool IsNoTickets = model.AdultTickets == 0 && model.ChildTickets == 0;
+            if (IsNoTickets == true)
+            {
+                response.Success = false;
+                response.Message = "No tickets are selected.";
+                return response;
+            }
+            var result = CheckBookingEventTickets(model.EventId);
+            if (result != null)
+            {
+                int RemainingTickets = result.Data;
+                int? totalEntryTicket = model.AdultTickets + model.ChildTickets;
+
+                if (IsNoTickets == true)
+                {
+                    if (RemainingTickets <= -1 || RemainingTickets == 0)
+                    {
+                        response.Success = false;
+                        response.Message = "Currently no ticket(s) are available.";
+                    }
+                    else if (RemainingTickets > 0 && totalEntryTicket > RemainingTickets)
+                    {
+                        response.Success = false;
+                        response.Message = "Currently " + RemainingTickets + " ticket(s) are available.";
+                    }
+                    else
+                    {
+                        response.Success = true;
+                    }
+                }
+            }
+            return response;
+        }
 
     }
 }

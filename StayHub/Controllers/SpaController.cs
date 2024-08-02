@@ -13,12 +13,12 @@ namespace StayHub.Controllers
     
     public class SpaController : Controller
     {
-        private readonly SpaService SpaService;
+        private readonly SpaService spaService;
 
-        public SpaController(SpaService SpaService)
+        public SpaController(SpaService _spaService)
         {
 
-            this.SpaService = SpaService;
+            spaService = _spaService;
         }
 
 
@@ -27,14 +27,14 @@ namespace StayHub.Controllers
         public IActionResult GetSpas()
         {
 
-            var response = SpaService.SpasList();
+            var response = spaService.SpasList();
             return Ok(response);
         }
         [Authorize(Roles = "ADMIN")]
         [HttpGet("GetSpaById")]
         public IActionResult GetSpaById([FromQuery] long SpaId)
         {
-            var response = SpaService.GetSpaById(SpaId);
+            var response = spaService.GetSpaById(SpaId);
             return Ok(response);
         }
         [Authorize]
@@ -42,14 +42,14 @@ namespace StayHub.Controllers
         public IActionResult AddEdit([FromBody] SpaViewModel model)
         {
 
-            var response = SpaService.SaveSpa(model);
+            var response = spaService.SaveSpa(model);
             return Ok(response);
         }
         [Authorize(Roles = "ADMIN")]
         [HttpGet("DeleteSpa")]
         public IActionResult Delete([FromQuery] long Id)
         {
-            var response = SpaService.DeleteSpa(Id);
+            var response = spaService.DeleteSpa(Id);
             return Ok(response);
         }
 
@@ -59,35 +59,10 @@ namespace StayHub.Controllers
         public IActionResult ValidateSpaCapacity([FromBody] SpaModel model)
         {
 
-            var response = ValidateSpaCapacity(model.SpaId, model.SpaDate, model.NoOfPersons, model.Name);
+            var response = spaService.ValidateSpaCapacity(model.SpaId, model.SpaDate, model.NoOfPersons, model.Name);
             return Ok(response);
         }
 
-        public IActionResult ValidateSpaCapacity(long SpaId, DateTime SpaDate, int NoOfPersons, string Name)
-        {
-            var response = new ResponseModel();
-            var result = SpaService.ValidateSpa(SpaId,SpaDate);
-            if (result.Success)
-            {
-              
-                int remainingCapacity = result.Data;
-                if (remainingCapacity <= -1 || remainingCapacity == 0)
-                {
-                    response.Success = false;
-                    response.Message = Name + " has no more capacity for " + SpaDate.ToString("dd MMM yyyy");
-                }
-                else if (remainingCapacity > 0 && NoOfPersons > remainingCapacity)
-                {
-                    response.Success = false;
-                    response.Message = "Currently " + remainingCapacity + "capacity for " + SpaDate.ToString("dd MMM yyyy");
-                }
-                else
-                {
-                    response.Success = true;
-                }
-            }
-            return Ok(response);
-        }
-
+     
     }
 }

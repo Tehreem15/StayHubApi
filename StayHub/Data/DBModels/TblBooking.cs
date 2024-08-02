@@ -13,14 +13,14 @@ namespace StayHub.Data.DBModels
         [ForeignKey(nameof(GuestId))]
         public TblUser TblUser { get; set; }
         public string ReferenceNumber { get; set; }
-        public string BookingAmount { get; set; }
+        public decimal BookingAmount { get; set; }
         public DateTime BookingDate { get; set; }
         [Required]
         [StringLength(10)]
         public string Status { get; set; }
         public string CreditCard { get; set; }
         public string TxnRef { get; set; }
-        public string PaidAmount { get; set; } 
+        public decimal PaidAmount { get; set; } 
         public DateTime? PaidDate { get; set; }
        
         public string Notes { get; set; }

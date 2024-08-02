@@ -151,7 +151,7 @@ namespace StayHub.Controllers
         //manage account/update password
         [HttpPost("ChangePassword")]
         [Authorize]
-        public IActionResult ChangrPassword([FromForm] ChangePasswordModel model)
+        public IActionResult ChangePassword([FromForm] ChangePasswordModel model)
         {
             var response = new ResponseModel<string>();
             if (ModelState.IsValid)

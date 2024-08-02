@@ -113,7 +113,7 @@ namespace StayHub.Services
 
 
         }
-        public async Task<bool> UpdateBooking(TblBooking booking)
+        public bool UpdateBooking(TblBooking booking)
         {
             try
             {

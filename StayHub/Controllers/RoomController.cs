@@ -89,7 +89,7 @@ namespace StayHub.Controllers
            
         }
         [HttpPost("GetAvaliableRoom")]
-        public IActionResult GetAvaliableRoom(RoomPriceViewModel model)
+        public IActionResult GetAvaliableRoom([FromBody]  RoomPriceViewModel model)
         {
             var response = new ResponseModel<object>();
             bool isValid = true;
@@ -125,54 +125,8 @@ namespace StayHub.Controllers
         [HttpPost("CalculateBookingPrice")]
         public IActionResult CalculateBookingPrice([FromBody] RoomPriceGeneralModel model)
         {
-            var response= new ResponseModel<RoomPriceGeneralModel>();
-            RoomViewModel resourceData = roomService.GetRoomById(model.Id).Data;
-            List<TblRoomPrice> accomodationAvailablities = roomService.GetAvailablitiesRoomList(s => s.RoomId == model.Id && (s.Date >= model.Startdate && s.Date <= model.EndDate)).List;
-            TimeSpan? datediff = model.EndDate - model.Startdate;
-            if (datediff.HasValue)
-                model.NoofNights = Convert.ToInt32(datediff.Value.TotalDays);
-
-            if (model.Startdate.HasValue && model.EndDate.HasValue)
-            {
-                for (DateTime i = model.Startdate.Value.Date; i < model.EndDate.Value; i = i.AddDays(1))
-                {
-                    var availabilityByDate = accomodationAvailablities.FirstOrDefault(s => s.Date.Date == i.Date.Date);
-                    if (availabilityByDate != null && availabilityByDate.Status == "A")
-                    {
-                        model.Price += availabilityByDate.Price;
-                        if (model.MaxAdditionalPerson > 0)
-                        {
-                            model.Price = model.Price + (model.MaxAdditionalPerson * availabilityByDate.AddPersonPrice);
-                        }
-                           
-                    }
-                    else
-                    {
-                        if (availabilityByDate == null)
-                            model.DateWiseReasons.Add(new DateWiseReasons()
-                            {
-                                Date = i,
-                                Reason = ReasonType.NotReady
-                            });
-                        else if (availabilityByDate.Status == "B")
-                            model.DateWiseReasons.Add(new DateWiseReasons()
-                            {
-                                Date = i,
-                                Reason = ReasonType.AlreadyBooked
-                            });
-                        else if (availabilityByDate.Status == "N")
-                            model.DateWiseReasons.Add(new DateWiseReasons()
-                            {
-                                Date = i,
-                                Reason = ReasonType.NotAvailable
-                            });
-                    }
-                }
-
-               
-                }
-            response.Success = true;
-            response.Data = model;
+            var response= roomService.ValidateRoom(model);
+         
             return Ok(response);
         }
 

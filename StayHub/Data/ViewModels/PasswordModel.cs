@@ -5,7 +5,7 @@ namespace StayHub.Data.ViewModels
     public class ChangePasswordModel
     {
         [Required]
-        public string Id { get; set; }
+        public long Id { get; set; }
         [Required]
         public string CurrentPassword { get; set; }
         [Required]

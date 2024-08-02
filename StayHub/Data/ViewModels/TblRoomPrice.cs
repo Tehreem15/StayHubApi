@@ -22,6 +22,8 @@ namespace StayHub.Data.ViewModels
         public int MaxAdditionalPerson { get; set; }
         public int NoofNights { get; set; }
         public string RoomName { get; set; }
+
+
         public string Detail
         {
             get
